@@ -1,16 +1,197 @@
-module Moment exposing (Token(..), format)
+module Moment
+    exposing
+        ( Token(..)
+        , format
+        )
+
+{-| A reliable way to format dates with elm
+
+`elm package install ryannhg/elm-moment`
+
+
+# A quick example
+
+To format a date, just create a formatter, and use it wherever you like!
+
+    import Date
+    import Moment
+
+
+    -- Create a custom formatter
+
+    yourFormatter : Date -> String
+    yourFormatter =
+        Moment.format
+            [ Moment.MonthNameFull
+            , Moment.Text " "
+            , Moment.DayOfMonthSuffix
+            , Moment.Text ", "
+            , Moment.YearNumber
+            ]
+
+
+    -- Using your formatter, format your date as a string!
+
+    yourPrettyDate : String
+    yourPrettyDate =
+        case Date.fromString "2018-02-05T00:00:00.000Z" of
+            Ok date ->
+                yourFormatter date
+
+            Err ->
+                "This shouldn't happen..."
+
+The value for `yourPrettyDate` will be `"February 5th, 2018" : String`
+
+
+# The `format` function
+
+@docs format
+
+
+# Available formatting options
+
+@docs Token
+
+-}
 
 import Date exposing (Date, Month(..), Day(..))
 
 
+{-| These are the available tokens to help you format dates.
+
+
+## Month
+
+**`MonthNumber`** - `1, 2, 3, ... 11, 12`
+
+**`MonthSuffix`** - `1st, 2nd, 3rd, ... 11th, 12th`
+
+**`MonthFixed`** - `01, 02, 03, ... 11, 12`
+
+**`MonthNameFirstThree`** - `Jan, Feb, Mar, ... Nov, Dec`
+
+**`MonthNameFull`** - `January, February, ... December`
+
+---
+
+
+## Day of the Month
+
+**`DayOfMonthNumber`** - `1, 2, 3, ... 30, 31`
+
+**`DayOfMonthSuffix`** - `1st, 2nd, 3rd, ... 30th, 31st`
+
+**`DayOfMonthFixed`** - `01, 02, 03, ... 30, 31`
+
+---
+
+
+## Day of the Year
+
+**`DayOfMonthNumber`** - `1, 2, 3, ... 364, 365`
+
+**`DayOfMonthSuffix`** - `1st, 2nd, 3rd, ... 364th, 365th`
+
+**`DayOfMonthFixed`** - `001, 002, 003, ... 364, 365`
+
+---
+
+
+## Day of the Week
+
+**`DayOfWeekNumber`** - `0, 1, 2, ... 5, 6`
+
+**`DayOfWeekSuffix`** - `0th, 1st, 2nd, ... 5th, 6th`
+
+**`DayOfWeekNameFirstTwo`** - `Su, Mo, Tue, ... Fr, Sa`
+
+**`DayOfWeekNameFirstThree`** - `Sun, Mon, Tue, ... Fri, Sat`
+
+**`DayOfWeekNameFull`** - `Sunday, Monday, ... Friday, Saturday`
+
+---
+
+
+## Year
+
+**`YearNumberLastTwo`** - `70, 71, ... 29, 30`
+
+**`YearNumberCapped`** - `1970, 1971, ... 2029, 2030`
+
+**`YearNumber`** - `70, 71, ... 9999, ...`
+
+---
+
+
+## Quarter of the Year
+
+**`QuarterNumber`** - `1, 2, 3, 4`
+
+**`QuarterSuffix`** - `1st, 2nd, 3rd, 4th`
+
+---
+
+
+## Week of the Year
+
+**`WeekOfYearNumber`** - `1, 2, 3, ... 51, 52`
+
+**`WeekOfYearSuffix`** - `1st, 2nd, 3rd, ... 51st, 52nd`
+
+**`WeekOfYearFixed`** - `01, 02, 03, ... 51, 52`
+
+---
+
+
+## AM / PM
+
+**`AmPmUppercase`** - `AM, PM`
+
+**`AmPmLowercase`** - `am, pm`
+
+---
+
+
+## Hour
+
+**`HourMilitaryNumber`** - `0, 1, 2, ... 22, 23`
+
+**`HourMilitaryFixed`** - `00, 01, 02, ... 22, 23`
+
+**`HourNumber`** - `0, 1, 2, ... 11, 12`
+
+**`HourFixed`** - `00, 01, 02, ... 11, 12`
+
+**`HourMilitaryFromOneNumber`** - `1, 2, ... 23, 24`
+
+**`HourMilitaryFromOneFixed`** - `01, 02, ... 23, 24`
+
+---
+
+
+## Minute
+
+**`MinuteNumber`** - `0, 1, 2, ... 58, 59`
+
+**`MinuteFixed`** - `00, 01, 02, ... 58, 59`
+
+---
+
+
+## Second
+
+**`SecondNumber`** - `0, 1, 2, ... 58, 59`
+
+**`SecondFixed`** - `00, 01, 02, ... 58, 59`
+
+-}
 type Token
     = MonthNumber
     | MonthSuffix
     | MonthFixed
-    | MonthNameShort
+    | MonthNameFirstThree
     | MonthNameFull
-    | QuarterNumber
-    | QuarterSuffix
     | DayOfMonthNumber
     | DayOfMonthSuffix
     | DayOfMonthFixed
@@ -22,21 +203,14 @@ type Token
     | DayOfWeekNameFirstTwo
     | DayOfWeekNameFirstThree
     | DayOfWeekNameFull
-    | DayOfWeekLocale
-    | DayOfWeekIso
-    | WeekOfYearNumber
-    | WeekOfYearSuffix
-    | WeekOfYearFixed
-    | WeekOfYearIsoNumber
-    | WeekOfYearIsoSuffix
-    | WeekOfYearIsoFixed
     | YearNumberLastTwo
     | YearNumberCapped
     | YearNumber
-    | WeekYearNumberLastTwo
-    | WeekYearNumberCapped
-    | WeekYearIsoNumberLastTwo
-    | WeekYearIsoNumberCapped
+    | QuarterNumber
+    | QuarterSuffix
+    | WeekOfYearNumber
+    | WeekOfYearSuffix
+    | WeekOfYearFixed
     | AmPmUppercase
     | AmPmLowercase
     | HourMilitaryNumber
@@ -49,16 +223,51 @@ type Token
     | MinuteFixed
     | SecondNumber
     | SecondFixed
-    | PlainText String
+    | Text String
 
 
+{-| This function takes in a list of tokens and a date to create your formatted string!
 
--- | FractionalSecond Int
--- | UnixTimestamp
--- | UnixMillisecondTimestamp
--- | PlainText String
+Let's say `someDate` is on November 15, 1993 at 15:06.
+
+    -- "15:06"
+    format
+        [ HourMilitaryFixed
+        , Text ":"
+        , MinuteFixed
+        ]
+        someDate
+
+    -- "3:06 pm"
+    format
+        [ HourNumber
+        , Text ":"
+        , MinuteFixed
+        , Text " "
+        , AmPmLowercase
+        ]
+        someDate
+
+    -- "Nov 15th, 1993"
+    format
+        [ MonthNameFirstThree
+        , Text " "
+        , DayOfMonthSuffix
+        , Text ", "
+        , YearNumber
+        ]
+        someDate
+
+-}
+format : List Token -> Date -> String
+format tokens date =
+    tokens
+        |> List.map (piece date)
+        |> String.join ""
 
 
+{-| Months of the year, in the correct order.
+-}
 months : List Month
 months =
     [ Jan
@@ -75,6 +284,8 @@ months =
     ]
 
 
+{-| Days of the week, in the correct order.
+-}
 days : List Day
 days =
     [ Sun
@@ -85,35 +296,6 @@ days =
     , Fri
     , Sat
     ]
-
-
-type alias TokenPair =
-    ( Token, String )
-
-
-tokenPairs : List TokenPair
-tokenPairs =
-    [ ( MonthNumber, "M" )
-    , ( MonthSuffix, "Mo" )
-    , ( MonthFixed, "MM" )
-    , ( MonthNameShort, "MMM" )
-    , ( MonthNameFull, "MMMM" )
-    ]
-
-
-getToken : String -> Maybe Token
-getToken str =
-    tokenPairs
-        |> List.filter (\( _, s ) -> s == str)
-        |> List.map (\( t, _ ) -> t)
-        |> List.head
-
-
-format : List Token -> Date -> String
-format tokens date =
-    tokens
-        |> List.map (piece date)
-        |> String.join ""
 
 
 piece : Date -> Token -> String
@@ -131,7 +313,7 @@ piece date token =
             monthNumber date
                 |> toFixedLength
 
-        MonthNameShort ->
+        MonthNameFirstThree ->
             Date.month date
                 |> toString
 
@@ -189,15 +371,6 @@ piece date token =
         DayOfWeekNameFull ->
             dayOfWeekName date
 
-        DayOfWeekLocale ->
-            dayOfWeek date
-                |> toString
-
-        DayOfWeekIso ->
-            dayOfWeek date
-                |> (+) 1
-                |> toString
-
         WeekOfYearNumber ->
             weekOfYear date
                 |> toString
@@ -210,18 +383,6 @@ piece date token =
             weekOfYear date
                 |> toFixedLength
 
-        WeekOfYearIsoNumber ->
-            weekOfYear date
-                |> toString
-
-        WeekOfYearIsoSuffix ->
-            weekOfYear date
-                |> toSuffix
-
-        WeekOfYearIsoFixed ->
-            weekOfYear date
-                |> toFixedLength
-
         YearNumberLastTwo ->
             year date
                 |> String.right 2
@@ -230,20 +391,6 @@ piece date token =
             year date
 
         YearNumber ->
-            year date
-
-        WeekYearNumberLastTwo ->
-            year date
-                |> String.right 2
-
-        WeekYearNumberCapped ->
-            year date
-
-        WeekYearIsoNumberLastTwo ->
-            year date
-                |> String.right 2
-
-        WeekYearIsoNumberCapped ->
             year date
 
         AmPmUppercase ->
@@ -298,7 +445,7 @@ piece date token =
             Date.second date
                 |> toFixedLength
 
-        PlainText string ->
+        Text string ->
             string
 
 
@@ -323,6 +470,7 @@ monthNumber : Date -> Int
 monthNumber date =
     monthPair date
         |> (\( i, m ) -> i)
+        |> (+) 1
 
 
 fullMonthName : Date -> String
@@ -577,17 +725,28 @@ toSuffix : Int -> String
 toSuffix num =
     let
         suffix =
-            case num % 10 of
-                1 ->
-                    "st"
+            case num of
+                11 ->
+                    "th"
 
-                2 ->
-                    "nd"
+                12 ->
+                    "th"
 
-                3 ->
-                    "rd"
+                13 ->
+                    "th"
 
                 _ ->
-                    "th"
+                    case num % 10 of
+                        1 ->
+                            "st"
+
+                        2 ->
+                            "nd"
+
+                        3 ->
+                            "rd"
+
+                        _ ->
+                            "th"
     in
         (toString num) ++ suffix

@@ -1,48 +1,59 @@
 # elm-moment
 > A reliable way to format dates with elm.
 
+### Using the [elm package](http://package.elm-lang.org/packages/ryannhg/elm-moment/latest)
 
-### Description
+```
+elm package install ryannhg/elm-moment
+```
+
+
+### What is `elm-moment`?
 
 If you're coming from Javascript, you might have heard of [MomentJS](https://momentjs.com).
 
 MomentJS is a great library for formatting dates!
 
-`elm-moment` has the same [formatting options](https://momentjs.com/docs/#/displaying/format/) as Moment, but uses Elm's awesome type system to provide human-readable names, and catch typos for you at compile time!
+`elm-moment` has the same [formatting options](https://momentjs.com/docs/#/displaying/format/) as Moment, but uses Elm's awesome type system to provide human readable names, and catch typos for you at compile time!
+
+No need to remember the difference between `mm` and `MM` and `M`!
 
 
-### Example
+### A quick example
 
 ```elm
 import Date
 import Moment
 
-exampleFormatter : Date -> String
-exampleFormatter =
+
+-- Create a custom formatter
+
+yourFormatter : Date -> String
+yourFormatter =
     Moment.format
         [ Moment.MonthNameFull
-        , Moment.PlainText " "
+        , Moment.Text " "
         , Moment.DayOfMonthSuffix
-        , Moment.PlainText ", "
+        , Moment.Text ", "
         , Moment.YearNumber
         ]
 
-example : String
-example =
+
+-- Using your formatter, format your date as a string!
+
+yourPrettyDate : String
+yourPrettyDate =
     case Date.fromString "2018-02-05T00:00:00.000Z" of
         Ok date ->
-            exampleFormatter date
-        Err reason ->
-            "Something went wrong: " ++ reason
+            yourFormatter date
+
+        Err ->
+            "This shouldn't happen..."
 
 ```
 
-Would make `example` return:
+Would make `yourPrettyDate` return:
 
 ```
 "February 5th, 2018" : String
 ```
-
-### A work-in-progress!
-
-__More documentation (and tests) coming soon!__
