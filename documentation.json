@@ -1,7 +1,7 @@
 [
   {
     "name": "Moment",
-    "comment": " A reliable way to format dates with elm\n\n`elm package install ryannhg/elm-moment`\n\n\n# A quick example\n\nTo format a date, just create a formatter, and use it wherever you like!\n\n    import Date\n    import Moment\n\n\n    -- Create a custom formatter\n\n    yourFormatter : Date -> String\n    yourFormatter =\n        Moment.format\n            [ Moment.MonthNameFull\n            , Moment.Text \" \"\n            , Moment.DayOfMonthSuffix\n            , Moment.Text \", \"\n            , Moment.YearNumber\n            ]\n\n\n    -- Using your formatter, format your date as a string!\n\n    yourPrettyDate : String\n    yourPrettyDate =\n        case Date.fromString \"2018-02-05T00:00:00.000Z\" of\n            Ok date ->\n                yourFormatter date\n\n            Err ->\n                \"This shouldn't happen...\"\n\nThe value for `yourPrettyDate` will be `\"February 5th, 2018\" : String`\n\n\n# The `format` function\n\n@docs format\n\n\n# Available formatting options\n\n@docs Token\n\n",
+    "comment": " A reliable way to format dates with elm\n\n\n# The `format` function\n\n@docs format\n\n\n# Available formatting options\n\n@docs Token\n\n",
     "aliases": [],
     "types": [
       {

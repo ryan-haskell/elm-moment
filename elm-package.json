@@ -1,7 +1,5 @@
 {
-	"type": "package",
-	"name": "ryannhg/elm-moment",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "summary": "A reliable way to format dates with elm",
     "repository": "https://github.com/ryannhg/elm-moment.git",
     "license": "BSD3",
