@@ -1,6 +1,14 @@
 # elm-moment
 > A reliable way to format dates with elm.
 
+# This project has moved!
+
+And now it's [over here](https://github.com/RyanNHG/elm-date-format).
+
+Following Elm's literal name policy, `elm-date-format` is probably more useful for discoverability.
+
+---
+
 ### Using the [elm package](http://package.elm-lang.org/packages/ryannhg/elm-moment/latest)
 
 ```
